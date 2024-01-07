@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:07:19 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/01/07 12:10:26 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:41:32 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct	s_data {
 	int		line_length;
 	int		endian;
 	void	*window;
+	void	*mlx;
 
 	double		x_min; //para que acepte decimales
 	double		x_max;//para que acepte decimales
@@ -96,7 +97,8 @@ typedef struct	s_data {
 //void	define_burning(t_fractal	*fractal, char *name);
 
 //event_mgmt.c
-int	mouse_event_mgmt(int keycode);
+int	mouse_event_mgmt(int keycode, t_data *all);
+void	ft_zoom(t_data *all, double zoom_nb);
 int	key_event_mgmt(int keycode);
 
 //ft_fractol.c
@@ -104,8 +106,6 @@ int	key_event_mgmt(int keycode);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	ft_message(void);
 int	ft_render(/*int fr_type, */t_data *all);
-int		mouse_event_mgmt(int keycode);
-int		key_event_mgmt(int keycode);
 void	ft_init(t_data *all);
 void	set_pixel_colour(t_data *all, double x, double y, int nb_it);
 

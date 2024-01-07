@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 16:57:28 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/01/07 12:20:04 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:39:47 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ int	main(int argc, char **argv)
 {
 	//t_fractal	fractal;
 	int			fr_type;
-	void		*mlx;
+	//void		*mlx;
 	t_data		all;
 	
 	fr_type = 0;
@@ -201,9 +201,9 @@ int	main(int argc, char **argv)
 		ft_message();
 		return (0);
 	}
-	mlx = mlx_init();
-	all.window = mlx_new_window(mlx, WIDTH, HEIGHT, "Hello world!");
-	all.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	all.mlx = mlx_init();
+	all.window = mlx_new_window(all.mlx, WIDTH, HEIGHT, "Hello world!");
+	all.img = mlx_new_image(all.mlx, WIDTH, HEIGHT);
 	all.addr = mlx_get_data_addr(all.img, &all.bits_per_pixel, &all.line_length,
 								&all.endian);
 	ft_init(&all);
@@ -230,7 +230,7 @@ int	main(int argc, char **argv)
 	mlx_mouse_hook(all.window, &mouse_event_mgmt, NULL);
 	mlx_key_hook(all.window, &key_event_mgmt, NULL);
 	mlx_hook(all.window, CLOSE, 0, key_event_mgmt, &all);
-	mlx_put_image_to_window(mlx, all.window, all.img, 0, 0);
-	mlx_loop(mlx); //keeps alive the program
+	mlx_put_image_to_window(all.mlx, all.window, all.img, 0, 0);
+	mlx_loop(all.mlx); //keeps alive the program
 	return (0);
 }
