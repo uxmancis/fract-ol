@@ -6,7 +6,7 @@
 #    By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/29 11:00:21 by uxmancis          #+#    #+#              #
-#    Updated: 2024/01/07 11:06:06 by uxmancis         ###   ########.fr        #
+#    Updated: 2024/01/09 19:51:30 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 #https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html
 
 # Source files and object files
-SRC = ft_fractol.c define_fr.c utils.c probatxuek.c mandelbrot.c event_mgmt.c
+SRC = ft_fractol.c utils.c probatxuek.c mandelbrot.c event_mgmt.c
 OBJ = $(SRC:.c=.o)
 
 # Executable name

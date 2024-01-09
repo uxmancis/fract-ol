@@ -6,12 +6,18 @@
 /*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:34:46 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/01/07 12:43:12 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/01/09 21:34:55 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/fract-ol.h"
 
+/* ft_zoom:
+*		Uses zoom multiplier to adjust complex number maximum and
+*		minum values.
+*		Then, the fractal is generated again at a different 
+*		resolution, giving the appearance of zooming in or out.
+*/
 void	ft_zoom(t_data *all, double zoom_nb)
 {
 	double	center_x;
@@ -44,12 +50,12 @@ int	mouse_event_mgmt(int keycode, t_data *all)
 	if (keycode == MOUSE_WHEEL_UP)
 	{
 		printf("MOUSE WHEEL UP\n");
-		//ft_zoom(all->mlx, 0.5);
+		ft_zoom(all->mlx, 0.5);
 	}
 	if (keycode == MOUSE_WHEEL_DOWN)
 	{
 		printf("MOUSE WHEEL down\n");
-		//ft_zoom(all->mlx, 2);
+		ft_zoom(all->mlx, 2);
 	}
 	return (0);
 }

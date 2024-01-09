@@ -6,38 +6,11 @@
 /*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 16:57:28 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/01/07 12:39:47 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/01/09 21:34:02 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/fract-ol.h"
-
-/*༊*·˚˚ ༘♡ ·˚꒰ ᥕᥱᥣᥴ᥆꧑ᥱ t᥆  ₊˚ˑ༄ ft_strcmp ═══════════════════╗
-		Checks argument number 1 comparing it to accepted    
-		fractal types by program.                            
-╚══ ═════════════ ═══════════  ═══════════════════ ══════ ༊═╝*/
-int	ft_strcmp(char	*fr_type, char *arg)
-{
-	int	len;
-	int	index;
-
-	len = ft_strlen(arg);
-	index = 0;
-	while (len > 0)
-	{
-		if (fr_type[index] == arg[index])
-			index++;
-		else
-			return (0);
-		if (index == ft_strlen(arg))
-		{
-			//printf("index = %d, síp, ya llegado al final, coincide", index);
-			//printf("type of fractal = %s\n", fr_type);
-			return (1);
-		}
-	}
-	return (0);
-}
 
 /*void	fractalsetup(t_fractal *fractal)
 {
@@ -107,7 +80,51 @@ void	set_pixel_colour(t_data *all, double x_window, double y_window, int nb_it)
 	//if(nb_it == 3)
 		//my_mlx_pixel_put(all, x_window, y_window, 0x000000FF);
 	else
-		my_mlx_pixel_put(all, x_window, y_window, 0xFF000000);
+		my_mlx_pixel_put(all, x_window, y_window, 0xFF000000);    
+}
+
+/* ft_get_complex_x: 
+*	What? Returns complex plane equivalent from window coordinate (each pixel)
+*		Input: x_window --> Output: x_complex
+*		
+*	Why? Each pixel represents 1 complex number (made 
+*	of x and y axis 2D axis). This function gets the x (real) 
+*	part.
+*
+*	How? Rule of 3
+*		When WIDTH (total nb of pixels)      ------ x_window
+*		When DIF.(total range of complex nb) ------ x_complex
+*/
+double	ft_get_complex_x(int	x_window, t_data *all)
+{
+	double	dif_total_complexnb;
+	double	x_complex;
+
+	dif_total_complexnb = ft_abs(all->x_max - all->x_min);
+	x_complex = dif_total_complexnb * x_window / WIDTH;
+	return (x_complex);
+}
+
+/* ft_get_complex_x: 
+*	What? Returns complex plane equivalent from window coordinate (each pixel)
+*		Input: y_window --> Output: y_complex
+*		
+*	Why? Each pixel represents 1 complex number (made 
+*	of x and y axis 2D axis). This function gets the y (imaginary) 
+*	part.
+*
+*	How? Rule of 3
+*		When HEIGHT (total nb of pixels)      ------ y_window
+*		When DIF.(total range of complex nb)  ------ y_complex
+*/
+double	ft_get_complex_y(int	y_window, t_data *all)
+{
+	double	dif_total_complexnb;
+	double	y_complex;
+
+	dif_total_complexnb = ft_abs(all->y_max - all->y_min);
+	y_complex = dif_total_complexnb * y_window / WIDTH;
+	return (y_complex);
 }
 
 int	ft_render(/*int fr_type, */t_data *all)
@@ -128,10 +145,8 @@ int	ft_render(/*int fr_type, */t_data *all)
 		while (y_window < HEIGHT)
 		{
 			//1.- Get complex number
-			//x_complex = x_makeit_complex(x);
-			x_complex = (all->x_max - all->x_min) * x_window / WIDTH;
-			y_complex = (all->y_max - all->y_min) * y_window / HEIGHT;
-			//printf("x_complex = %f, y_complex = %f\n", x_complex, y_complex);
+			x_complex = ft_get_complex_x(x_window, all);
+			y_complex = ft_get_complex_y(y_window, all);
 			//2.- Mandelbrot: is it part of the set? //Hemen barruan, mandar a función que llame a cada fractal en base al contenido de la variable fr_type
 			nb_iterations = ft_mandelbrot(x_complex, y_complex);
 			//3.- Assign colour to pixel
@@ -175,10 +190,15 @@ int y_makeit_complex (int	y_window)
 
 void	ft_init(t_data *all)
 {
-	all->x_min = -2.0;
-	all->x_max = 2.0;
-	all->y_max = -1.5;
-	all->y_min = all->y_max + (all->x_max - all->x_min) * HEIGHT / WIDTH;
+	double	dif_x;
+	double	dif_y;
+
+	all->x_min = -0.4;
+	all->x_max = 0.4;
+	all->y_min = -0.4;
+	dif_x = all->x_max - all->x_min;
+	dif_y = dif_x * HEIGHT / WIDTH;
+	all->y_max = all->y_min + dif_y;
 	//printf("initialization: x_max=%f, x_min=%f, y_max=%f, x_min=%f\n", all->x_max, all->x_min, all->y_max, all->y_min);
 }
 
@@ -188,11 +208,9 @@ void	ft_init(t_data *all)
 /// @return 
 int	main(int argc, char **argv)
 {
-	//t_fractal	fractal;
 	int			fr_type;
-	//void		*mlx;
 	t_data		all;
-	
+
 	fr_type = 0;
 	if (argv[1])
 		fr_type = ft_check_fr(argv);
@@ -208,29 +226,10 @@ int	main(int argc, char **argv)
 								&all.endian);
 	ft_init(&all);
 	ft_render(/*fr_type, */&all);
-	/*x = 0;
-	while (x < WIDTH)
-	{
-		y = 0;
-		while (y < HEIGHT)
-		{
-			//ft_paint: choose colour for my_mlx_pixel ||
-			if (y <= (HEIGHT/2))
-				my_mlx_pixel_put(&img, x, y, 0x00FF0000);
-			if (y > (HEIGHT/2))
-				my_mlx_pixel_put(&img, x, y, 0x000000FF);
-			if (ft_mandelbrot(x,y) == 1)
-				my_mlx_pixel_put(&all, x, y, 0x00FF0000);
-			if (ft_mandelbrot(x,y) == 0)
-				my_mlx_pixel_put(&all, x, y, 0x000000FF);
-			y++;
-		}
-		x++;
-	}*/
 	mlx_mouse_hook(all.window, &mouse_event_mgmt, NULL);
 	mlx_key_hook(all.window, &key_event_mgmt, NULL);
 	mlx_hook(all.window, CLOSE, 0, key_event_mgmt, &all);
 	mlx_put_image_to_window(all.mlx, all.window, all.img, 0, 0);
-	mlx_loop(all.mlx); //keeps alive the program
+	mlx_loop(all.mlx); //k    eeps alive the program
 	return (0);
 }

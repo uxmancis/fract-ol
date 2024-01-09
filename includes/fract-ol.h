@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:07:19 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/01/07 12:41:32 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/01/09 21:28:18 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,19 +64,23 @@
 	int			color;
 }				t_fractal;*/
 
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	void	*window;
+typedef struct	s_data
+{
 	void	*mlx;
-
-	double		x_min; //para que acepte decimales
-	double		x_max;//para que acepte decimales
-	double		y_min;//para que acepte decimales
-	double		y_max;//para que acepte decimales
+	void	*window;
+	void	*img;
+	char	*buf;
+	char	*addr; //mcombeau-k eztauka, lo tengo por la función my_mlx_pixel_put (42 Docs)
+	int		bits_per_pixel;//mcombeau-k eztauka, lo tengo por la función mlx_get_data_addr
+	int		line_length;//mcombeau-k eztauka, lo tengo por la función mlx_get_data_addr
+	int		endian;//mcombeau-k eztauka lo tengo por la función mlx_get_data_addr
+	double		x_min; //para que acepte decimales (mcombeau: min_r)
+	double		x_max;//para que acepte decimales (mcombeau: max_r)
+	double		y_min;//para que acepte decimales (mcombeau: min_i)
+	double		y_max;//para que acepte decimales (mcombeau: max_i)
+	int		*palette; //?
+	int		color_pattern; //?
+	int		color; //?
 }				t_data;
 
 /*typedef struct s_imaginari_number
@@ -108,6 +112,9 @@ void	ft_message(void);
 int	ft_render(/*int fr_type, */t_data *all);
 void	ft_init(t_data *all);
 void	set_pixel_colour(t_data *all, double x, double y, int nb_it);
+double	ft_get_complex_x(int	x_window, t_data *all);
+double	ft_get_complex_y(int	y_window, t_data *all);
+
 
 //hooks.c
 //int		close_game(t_fractal *fractal);
@@ -126,5 +133,7 @@ int	ft_mandelbrot(double	x_complex, double	y_complex);
 //utils.c
 int		ft_strlen(char	*str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(char	*fr_type, char *arg);
+double	ft_abs(double input);
 
 #endif
